@@ -1,0 +1,37 @@
+services:
+  pgdatabase:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ny_taxi_postgres_data:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "8085:80"
+
+  taxi_ingest:
+    build: .
+    depends_on:
+      - pgdatabase
+    command: >
+      --pg-user=${PG_USER}
+      --pg-pass=${PG_PASS}
+      --pg-host=${PG_HOST}
+      --pg-port=${PG_PORT}
+      --pg-db=${PG_DB}
+      --target-table=yellow_taxi_trips_2021_01
+
+volumes:
+  ny_taxi_postgres_data:
+  pgadmin_data:
