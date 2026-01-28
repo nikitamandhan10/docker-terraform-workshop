@@ -32,16 +32,16 @@ docker-workshop/
    Create a `.env` file in the `pipeline/` directory:
 
    ```env
-   POSTGRES_USER=root
-   POSTGRES_PASSWORD=root
-   POSTGRES_DB=ny_taxi
-   PGADMIN_EMAIL=admin@admin.com
-   PGADMIN_PASSWORD=admin
-   PG_USER=root
-   PG_PASS=root
-   PG_HOST=pgdatabase
-   PG_PORT=5432
-   PG_DB=ny_taxi
+      POSTGRES_USER=<username>
+      POSTGRES_PASSWORD=<password>
+      POSTGRES_DB=<db_name>
+      PGADMIN_EMAIL=<user_email>
+      PGADMIN_PASSWORD=<password>
+      PG_USER=<username>
+      PG_PASS=<password>
+      PG_HOST=<postgres container name>
+      PG_PORT=5432
+      PG_DB=<db_name>
    ```
 
 2. **Start the services**
@@ -116,11 +116,11 @@ uv run python main.py
 **Data ingestion script:**
 ```bash
 uv run python ingest_data.py \
-  --pg-user root \
-  --pg-pass root \
+  --pg-user <username> \
+  --pg-pass <password> \
   --pg-host localhost \
   --pg-port 5432 \
-  --pg-db ny_taxi \
+  --pg-db <db name> \
   --target-table yellow_taxi_trips
 ```
 
@@ -151,11 +151,11 @@ docker build -t taxi-ingest:v001 .
 docker run -it \
   --network=pipeline_default \
   taxi-ingest:v001 \
-  --pg-user=root \
-  --pg-pass=root \
+  --pg-user=<username> \
+  --pg-pass=<passowrd> \
   --pg-host=pgdatabase \
   --pg-port=5432 \
-  --pg-db=ny_taxi \
+  --pg-db=<db_name> \
   --target-table=yellow_taxi_trips
 ```
 
